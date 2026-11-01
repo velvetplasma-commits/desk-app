@@ -1,2 +1,1 @@
-# desk-app
-PAPER signal desk viewer (static, coin data only)
+Static viewer for a PAPER signal desk. Coin data only; never places orders.
