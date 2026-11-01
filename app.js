@@ -35,7 +35,7 @@ const icon = (a, n = 34) => `<span class="ai" style="background:${AG[a].bg};widt
 function agentState(name) {
   const a = (S.agents || []).find(x => x.name === name) || {};
   const deskAge = a.last ? S.updated - a.last : 1e9;   // heartbeat age at publish time
-  const ok = !a.paused && deskAge < 90 && Date.now() / 1000 - S.updated < 900;
+  const ok = !a.paused && deskAge < 150 && Date.now() / 1000 - S.updated < 900;
   return {ok, paused: a.paused, last: a.last};
 }
 const running = () => NAMES.filter(n => agentState(n).ok).length;
