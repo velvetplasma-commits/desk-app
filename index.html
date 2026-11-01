@@ -2,44 +2,36 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b0d10">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Desk">
+<meta name="apple-mobile-web-app-title" content="Signal Desk">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 <link rel="icon" href="icons/icon-192.png">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=2">
 <title>Signal Desk</title>
 </head>
 <body>
-<header>
-  <div class="row"><h1>Signal Desk</h1><span id="mode" class="badge">…</span></div>
-  <div class="sub" id="updated">Lade Daten…</div>
-</header>
-<main>
-  <section class="cards">
-    <div class="card"><div class="k">Stack</div><div class="v" id="stack">–</div></div>
-    <div class="card"><div class="k">Frei</div><div class="v" id="free">–</div></div>
-    <div class="card"><div class="k">PnL Nacht</div><div class="v" id="pnln">–</div></div>
-    <div class="card"><div class="k">PnL gesamt</div><div class="v" id="pnlt">–</div></div>
-  </section>
-  <p class="note">Nur Papierhandel. Diese App platziert nie Orders – Kaufen/Verkaufen nur selbst auf FOMO.</p>
-  <h2>Agenten</h2><div id="agents" class="agents"></div>
-  <h2>Offene Positionen</h2><div id="open" class="list"></div>
-  <h2>Signale</h2><div id="signals" class="list"></div>
-  <h2>Warteraum <span id="seen" class="muted"></span></h2><div id="waiting" class="list"></div>
-  <h2>Geschlossene Positionen</h2><div id="closed" class="list"></div>
-  <h2>Aktivität</h2><div id="activity" class="list"></div>
-  <h2>Scanner heute Nacht</h2><div id="scans" class="list"></div>
-  <h2>Übersprungen</h2><div id="skips" class="list"></div>
-</main>
-<footer>
-  <a id="profile" class="btn ghost" href="https://fomo.family/profile/Space999?source=share_link&r=savipww" target="_blank" rel="noopener">Mein FOMO-Profil</a>
-  <p>New to FOMO? <a id="signup" href="https://fomo.family/r/savipww" target="_blank" rel="noopener">https://fomo.family/r/savipww</a></p>
-</footer>
-<script src="app.js"></script>
+<div id="top">
+  <a class="brand" href="#/account"><img src="icons/icon-192.png" alt=""><span>Signal Desk</span><i>›</i></a>
+  <div class="tools">
+    <button id="btnSearch" aria-label="Suche"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+    <button id="btnBell" aria-label="Benachrichtigungen"><svg viewBox="0 0 24 24"><path d="M6 17V11a6 6 0 0112 0v6l1.5 2h-15z"/><path d="M10 21h4"/></svg><b id="bellDot"></b></button>
+  </div>
+</div>
+<div id="searchBar" hidden><input id="searchIn" placeholder="Coin, Symbol oder Mint suchen" autocomplete="off"><div id="searchRes"></div></div>
+<main id="view"></main>
+<div id="sheet" hidden><div class="sheet-in"><div class="grab"></div><h3>Benachrichtigungen</h3><div id="notif"></div></div></div>
+<canvas id="confetti"></canvas>
+<nav id="tabs">
+  <a href="#/" data-t="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Home</a>
+  <a href="#/agents" data-t="agents"><svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3.2"/><circle cx="16" cy="8" r="3.2"/><path d="M2 20c0-3.5 2.7-6 6-6s6 2.5 6 6M10 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/></svg>Agents</a>
+  <a href="#/activity" data-t="activity"><svg viewBox="0 0 24 24"><path d="M2 12h4l3-8 6 16 3-8h4"/></svg>Activity</a>
+  <a href="#/account" data-t="account"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>Account</a>
+</nav>
+<script src="app.js?v=2"></script>
 </body>
 </html>
