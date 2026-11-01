@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d10">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Desk">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css">
+<title>Signal Desk</title>
+</head>
+<body>
+<header>
+  <div class="row"><h1>Signal Desk</h1><span id="mode" class="badge">…</span></div>
+  <div class="sub" id="updated">Lade Daten…</div>
+</header>
+<main>
+  <section class="cards">
+    <div class="card"><div class="k">Stack</div><div class="v" id="stack">–</div></div>
+    <div class="card"><div class="k">Frei</div><div class="v" id="free">–</div></div>
+    <div class="card"><div class="k">PnL Nacht</div><div class="v" id="pnln">–</div></div>
+    <div class="card"><div class="k">PnL gesamt</div><div class="v" id="pnlt">–</div></div>
+  </section>
+  <p class="note">Nur Papierhandel. Diese App platziert nie Orders – Kaufen/Verkaufen nur selbst auf FOMO.</p>
+  <h2>Agenten</h2><div id="agents" class="agents"></div>
+  <h2>Offene Positionen</h2><div id="open" class="list"></div>
+  <h2>Signale</h2><div id="signals" class="list"></div>
+  <h2>Warteraum <span id="seen" class="muted"></span></h2><div id="waiting" class="list"></div>
+  <h2>Geschlossene Positionen</h2><div id="closed" class="list"></div>
+  <h2>Aktivität</h2><div id="activity" class="list"></div>
+  <h2>Scanner heute Nacht</h2><div id="scans" class="list"></div>
+  <h2>Übersprungen</h2><div id="skips" class="list"></div>
+</main>
+<footer>
+  <a id="profile" class="btn ghost" href="https://fomo.family/profile/Space999?source=share_link&r=savipww" target="_blank" rel="noopener">Mein FOMO-Profil</a>
+  <p>New to FOMO? <a id="signup" href="https://fomo.family/r/savipww" target="_blank" rel="noopener">https://fomo.family/r/savipww</a></p>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
