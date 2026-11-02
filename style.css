@@ -67,3 +67,24 @@ svg{fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-l
 .back{display:inline-flex;align-items:center;gap:4px;color:var(--g);padding:4px 18px 8px;font-size:16px}
 .ch{padding:0 22px}.ch h1{margin:0;font-size:30px}.ch .sub{color:var(--mut);font-size:13px;margin-top:2px;word-break:break-all}
 .stale{margin:0 22px;color:var(--y);font-size:12px}
+.aud-h{margin:0;padding:0 22px;font-size:34px;font-weight:800}
+.aud-cnt{display:flex;padding:12px 22px 4px}.aud-cnt div{flex:1}.aud-cnt small{color:#aaa;font-size:13px}.aud-cnt b{display:block;font-size:28px;font-weight:700}
+.aud-coin{display:flex;align-items:center;gap:12px;padding:16px 22px 4px}.aud-coin b{font-size:19px}.aud-coin small{display:block;color:#888;font-size:12px}
+.aud-badge{background:#0c2a3a;color:#7dd3fc;border-radius:10px;padding:4px 10px;font-weight:700;font-size:13px}.aud-badge.r{background:#3a0d0d;color:#f87171}.aud-badge.g{background:#0b2e18;color:#4ade80}
+.aud-main{display:flex;padding:0 10px 0 6px}.aud-stack{flex:none;overflow:visible}.aud-stack image{transition:opacity .3s}
+.aud-rows{flex:1;min-width:0;padding-top:4px}.aud-row{height:47px;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:0 6px;border-radius:10px;transition:background .25s}
+.aud-row small{display:block;color:#999;font-size:11px}.aud-row b{display:block;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px}
+.aud-row.act{background:#0d1b2e}.aud-row.act b{color:#bfdbfe}.aud-row.skip b{color:#555;font-weight:500}
+.aud-st{width:22px;height:22px;border-radius:50%;border:1.6px solid #444;flex:none;display:grid;place-items:center;font-size:12px;font-weight:800;color:#000}
+.aud-st.g{background:#22c55e;border-color:#22c55e}.aud-st.r{background:#ef4444;border-color:#ef4444;color:#fff}.aud-st.b{border-color:#60a5fa;animation:pulse 1.2s infinite}
+.aud-card{display:flex;align-items:center;gap:12px;margin:14px 18px 0;background:#141414;border:1px solid #222;border-radius:18px;padding:16px}
+.aud-card b{display:block;font-size:17px}.aud-card small{display:block;color:#999;font-size:13px;margin-top:2px}
+.aud-card.r{background:#1f0707;border-color:#5b1414}.aud-card.r b{color:#f87171}.aud-card.g{background:#06200f;border-color:#14532d}.aud-card.g b{color:#4ade80}
+.aud-sh{width:38px;height:38px;border-radius:50%;background:#0c1a2a;display:grid;place-items:center;color:#60a5fa;flex:none;font-weight:800}.aud-sh svg{width:20px;height:20px}
+.aud-sh.r{background:#ef4444;color:#fff}.aud-sh.g{background:#22c55e;color:#000}
+.aud-bar{height:5px;background:#2a2a2a;border-radius:3px;margin-top:10px;overflow:hidden}.aud-bar i{display:block;height:100%;background:#60a5fa;border-radius:3px;transition:width .35s ease}
+.tgl{width:52px;height:32px;border-radius:16px;background:#22c55e;position:relative;flex:none;opacity:.9}.tgl i{position:absolute;right:3px;top:3px;width:26px;height:26px;border-radius:50%;background:#fff}
+.aud-dots{display:flex;justify-content:center;gap:6px;padding:12px 0 0}.aud-dots i{width:6px;height:6px;border-radius:50%;background:#444}.aud-dots i.on{background:#fff}
+.aud-foot{text-align:center;color:#666;font-size:11px;padding-top:8px}
+.mstack{width:58px;display:flex;flex-direction:column;align-items:center}.mstack i{position:relative;width:54px;height:12px;border-radius:50%;border:1.5px solid #444;background:#151515;margin-top:-4px;box-shadow:0 2px 0 #0a0a0a}
+.mstack i.g{border-color:#22c55e;background:#0f2b18}.mstack i.r{border-color:#ef4444;background:#2a0b0b}
