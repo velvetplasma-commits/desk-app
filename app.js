@@ -168,6 +168,7 @@ function home() {
     <div class="chg ${neg ? "neg" : ""}">${neg ? "▼" : "▲"} ${usd(Math.abs(ch))} (${Math.abs(cp).toFixed(2)}%) <span class="mult">${(v / base).toFixed(2)}×</span></div></div>
     ${chartHtml(ser, S.markers, {minSpan: 2, colorByTrend: true, note: flat ? `${trades} Trades · flach bei ${usd(base)} – wartet auf erstes Signal` : ""})}
     <div class="ranges">${Object.keys(RANGES).map(r => `<button class="${r === RANGE ? "on" : ""} ${r === "LIVE" ? "live" : ""}" data-r="${r}">${r}</button>`).join("")}</div>
+    <a class="flcard" href="#/floor"><span style="font-size:26px">🕹️</span><span><b>Desk Floor</b><small>Live-Animation der Pipeline</small></span></a>
     <div class="sec"><h2>Agents</h2><span><span data-run>${running()}</span> running</span></div>${cardsRow()}
     <div class="sec"><h2>Activity</h2><a href="#/activity">See all</a></div>
     <div class="rows">${allActivity().slice(0, 8).map(rowAny).join("") || '<div class="emp">Noch keine Aktivität.</div>'}</div>${foot()}</div>`;
@@ -302,6 +303,7 @@ function render() {
   else if (r === "activity") activity();
   else if (r === "account") account();
   else if (r === "auditor") auditorPage(a ? decodeURIComponent(a) : null, b);
+  else if (r === "floor") floorPage();
   else if (r === "coin") coin(decodeURIComponent(a || ""));
   else home();
 }
@@ -315,7 +317,8 @@ async function load() {
     const first = !S; S = s; lastUpdated = s.updated;
     if ((S.activity || []).some(a => a.ts > (+localStorage.seenTs || 0))) $("#bellDot").classList.add("on");
     checkBigWin();
-    if (first || !/^#\/(coin|auditor)/.test(location.hash)) { const y = scrollY; render(); scrollTo(0, y); }
+    if (/^#\/floor/.test(location.hash) && !first) flData();
+    else if (first || !/^#\/(coin|auditor|floor)/.test(location.hash)) { const y = scrollY; render(); scrollTo(0, y); }
   } catch (e) { if (!S) V.innerHTML = `<div class="emp" style="padding-top:40px">Keine Verbindung zum Desk-Stand. Wird erneut versucht…</div>`; }
 }
 addEventListener("hashchange", () => { render(); scrollTo(0, 0); });
