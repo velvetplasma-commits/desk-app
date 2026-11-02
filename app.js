@@ -56,9 +56,10 @@ function card(name) {
   if (name === "auditor") {
     const l = k.last, layers = l && l.audit ? l.audit.layers : [];
     const sq = Array.from({length: 8}, (_, i) => `<i class="${layers[i] ? (layers[i].pass ? "g" : layers[i].pass === false ? "r" : "") : ""}"></i>`).join("");
-    body = head(`${k.taken_apart} taken apart`, "#22c55e") + `<div style="display:flex;gap:10px;margin-top:12px"><div class="disc">${"<i></i>".repeat(6)}</div>
-      <div style="min-width:0">${l ? `<a href="${coinHref(l)}" class="sl"><span class="nm">${av(l, 18)}${esc(tick(l))}</span></a>` : `<div class="sl" style="color:#777">wartet…</div>`}
-      <div class="sq">${sq}</div><div style="font-size:11.5px;color:#aaa;margin-top:6px">${l ? "taking apart…" : "noch kein Coin"}</div>
+    const mm = l && l.audit ? audModel(l) : null, nxt = !mm ? "" : mm.fail >= 0 ? `Rejected · layer ${mm.fail + 1}` : mm.cleared ? "8/8 → Analyst" : `${mm.checked}/8 checked`;
+    body = head(`${k.taken_apart} taken apart`, "#22c55e") + `<div style="display:flex;gap:10px;margin-top:12px">${miniStack(l)}
+      <div style="min-width:0">${l ? `<a href="#/auditor" class="sl"><span class="nm">${av(l, 18)}${esc(tick(l))}</span></a>` : `<div class="sl" style="color:#777">wartet…</div>`}
+      <div class="sq">${sq}</div><div style="font-size:11.5px;color:#aaa;margin-top:6px">${l ? esc(nxt) : "noch kein Coin"}</div>
       <div style="font-size:11.5px;color:#777">${k.rejected} rejected</div></div></div>`;
   } else if (name === "scanner") {
     const rows = (S.scans || []).slice(0, 4).map(s => `<a href="${coinHref(s)}" class="sl ${s.verdict === "pass" ? "p" : "k"}"><span class="nm">${av(s, 16)}${esc(tick(s))}</span>
@@ -80,7 +81,7 @@ function card(name) {
       <div class="sl"><span>Trailing</span><b style="color:#22c55e">${k.trail_pct}% ab +${k.trail_start_pct}%</b></div><div class="sl"><span>Timeout</span><b>${k.timeout_h}h</b></div>
       ${ops.slice(0, 1).map(p => `<a href="${coinHref(p)}" class="sl"><span class="nm">${av(p, 16)}${esc(tick(p))}</span><span class="${p.upnl_pct >= 0 ? "pos" : "neg"}">${pct(p.upnl_pct)}</span></a>`).join("")}</div>`;
   }
-  return `<div class="ac" data-agent="${name}" onclick="location.hash='#/agents/${name}'">${body}</div>`;
+  return `<div class="ac" data-agent="${name}" onclick="location.hash='${name === "auditor" ? "#/auditor" : "#/agents/" + name}'">${body}</div>`;
 }
 function cardsRow() {
   return `<div class="cards" id="cards">${NAMES.map(card).join("")}</div><div class="dots" id="dots">${NAMES.map((_, i) => `<i class="${i ? "" : "on"}"></i>`).join("")}</div>`;
@@ -295,11 +296,12 @@ function checkBigWin() {
 // ---------- router / load ----------
 function render() {
   if (!S) return;
-  const h = location.hash.replace(/^#\/?/, ""), [r, a] = h.split("/");
+  const h = location.hash.replace(/^#\/?/, ""), [r, a, b] = h.split("/");
   document.querySelectorAll("#tabs a").forEach(t => t.classList.toggle("on", t.dataset.t === (r === "coin" ? "" : r || "home")));
   if (r === "agents") agents(a && NAMES.includes(a) ? a : null);
   else if (r === "activity") activity();
   else if (r === "account") account();
+  else if (r === "auditor") auditorPage(a ? decodeURIComponent(a) : null, b);
   else if (r === "coin") coin(decodeURIComponent(a || ""));
   else home();
 }
@@ -313,7 +315,7 @@ async function load() {
     const first = !S; S = s; lastUpdated = s.updated;
     if ((S.activity || []).some(a => a.ts > (+localStorage.seenTs || 0))) $("#bellDot").classList.add("on");
     checkBigWin();
-    if (first || !location.hash.startsWith("#/coin")) { const y = scrollY; render(); scrollTo(0, y); }
+    if (first || !/^#\/(coin|auditor)/.test(location.hash)) { const y = scrollY; render(); scrollTo(0, y); }
   } catch (e) { if (!S) V.innerHTML = `<div class="emp" style="padding-top:40px">Keine Verbindung zum Desk-Stand. Wird erneut versucht…</div>`; }
 }
 addEventListener("hashchange", () => { render(); scrollTo(0, 0); });
