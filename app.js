@@ -327,7 +327,7 @@ function flowLine() {
 const PAPER_TAG = `<span class="mbadge" style="background:#422006;color:#fde68a">PAPER · Spielgeld</span>`;
 function potsPage() {
   V.innerHTML = `<div class="page"><div class="sec" style="padding-top:6px"><h2>Töpfe</h2>${PAPER_TAG}</div>
-    <div style="padding:0 22px 10px;color:#999;font-size:13px">Übungsgeld, keine echten Orders. Ergebnisse nach Gebühren und Schlupf. Stand ${tm(S.updated)} (vor <span data-ago="${S.updated}">${ago(S.updated)}</span>).</div>
+    <div style="padding:0 22px 10px;color:#999;font-size:13px">Übungsgeld, keine echten Orders. Ergebnisse nach Gebühren und Schlupf. Stand ${tm(S.updated)} (<span data-ago="${S.updated}">vor ${ago(S.updated)}</span>).</div>
     ${flowLine()}${POTS.map(([k, l, d]) => potCard(k, l, d)).join("")}${foot()}</div>`;
 }
 function potsTeaser() {
