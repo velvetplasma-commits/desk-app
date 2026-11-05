@@ -169,6 +169,7 @@ function home() {
     ${chartHtml(ser, S.markers, {minSpan: 2, colorByTrend: true, note: flat ? `${trades} Trades · flach bei ${usd(base)} – wartet auf erstes Signal` : ""})}
     <div class="ranges">${Object.keys(RANGES).map(r => `<button class="${r === RANGE ? "on" : ""} ${r === "LIVE" ? "live" : ""}" data-r="${r}">${r}</button>`).join("")}</div>
     <a class="flcard" href="#/floor"><span style="font-size:26px">🕹️</span><span><b>Desk Floor</b><small>Live-Animation der Pipeline</small></span></a>
+    ${potsTeaser()}
     <div class="sec"><h2>Agents</h2><span><span data-run>${running()}</span> running</span></div>${cardsRow()}
     <div class="sec"><h2>Activity</h2><a href="#/activity">See all</a></div>
     <div class="rows">${allActivity().slice(0, 8).map(rowAny).join("") || '<div class="emp">Noch keine Aktivität.</div>'}</div>${foot()}</div>`;
@@ -294,6 +295,46 @@ function checkBigWin() {
   localStorage.wins = JSON.stringify(big.map(p => p.id));
 }
 
+// ---------- Töpfe (PAPER · Spielgeld), 05.11.2026 ----------
+const POTS = [["main", "Haupt", "Analyst-Signal, 8 % vom Stack"], ["probe", "Probe", "kleine Probe-Tickets"], ["m2", "M2", "Einstieg nach Wartezeit"]];
+const pxs = x => x == null ? "–" : "$" + Number(x).toPrecision(3);
+function potData(k) {
+  if (k === "main") return {...(S.main_pot || {}), closed_list: S.closed || [], open_list: S.open || []};
+  return S[k] || {};
+}
+function potCard(k, label, sub) {
+  const d = potData(k), kv = (a, b) => `<div class="kv"><span>${a}</span><b>${b}</b></div>`;
+  const last = (d.closed_list || []).slice(0, 5);
+  const rows = last.map(p => `<a class="row" href="${coinHref(p)}">${av(p, 32)}<span class="rt"><b>${esc(p.name)}</b><small>${pxs(p.entry)} → ${pxs(p.exit)} · ${esc(p.reason || "")}</small></span><span class="rr"><b class="${(p.pnl || 0) >= 0 ? "pos" : "neg"}">${usd(p.pnl, true)}</b><small>${pct(p.pnl_pct)}</small></span></a>`).join("");
+  const off = k !== "main" && d.enabled === false ? ` <span style="color:#777;font-size:12px">aus</span>` : "";
+  return `<div class="panel"><div style="display:flex;justify-content:space-between;align-items:baseline"><b style="font-size:18px">${label}${off}</b><small style="color:#999">${esc(sub)}</small></div>
+    ${kv("Trades (davon offen)", `${d.trades ?? 0} (${d.open ?? 0})`)}${kv("Trefferquote", d.hit_rate_pct == null ? "–" : `${d.hit_rate_pct}% · ${d.wins}/${d.closed}`)}
+    ${kv("Ø nach Kosten", d.avg_pnl_usd == null ? "–" : `${usd(d.avg_pnl_usd, true)} (${pct(d.avg_pnl_pct)})`)}${kv("Summe", `<span class="${(d.sum_pnl_usd || 0) >= 0 ? "pos" : "neg"}">${usd(d.sum_pnl_usd || 0, true)}</span>`)}
+    ${k !== "main" && d.stack != null ? kv("Topf-Stand", usd(d.stack)) : ""}
+    <div style="font-size:12px;color:#999;margin:10px 0 2px">Letzte 5 Trades · Coin · Einstieg → Ausstieg · Grund</div>
+    <div>${rows || '<div class="emp" style="padding:8px 0">Noch keine geschlossenen Trades.</div>'}</div></div>`;
+}
+function flowLine() {
+  const f = S.flow24; if (!f) return "";
+  const st = (n, a, b) => `<div style="flex:1;text-align:center;min-width:0"><small style="color:#999;font-size:11px">${n}</small><b style="display:block;font-size:18px">${a}</b><small style="color:#777;font-size:11px">${b}</small></div>`;
+  const ar = `<span style="color:#555;align-self:center">→</span>`;
+  const p = f.pots || {};
+  return `<div class="panel"><div style="font-size:12px;color:#999;margin-bottom:8px">Durchsatz letzte ${f.hours} h</div><div style="display:flex;gap:4px">
+    ${st("Scanner", f.scanner.seen, `${f.scanner.passed} weiter`)}${ar}${st("Auditor", f.auditor.checked, `${f.auditor.rejected} raus`)}${ar}
+    ${st("Analyst", f.analyst.scored, `${f.analyst.passed} ok`)}${ar}${st("Töpfe", (p.main || 0) + (p.probe || 0) + (p.m2 || 0), `H ${p.main || 0} · P ${p.probe || 0} · M2 ${p.m2 || 0}`)}</div>
+    ${f.m2_checks && f.m2_checks.checked != null ? `<div style="font-size:12px;color:#777;margin-top:8px">M2-Prüfungen: ${f.m2_checks.checked} geprüft, ${f.m2_checks.ok} ok</div>` : ""}</div>`;
+}
+const PAPER_TAG = `<span class="mbadge" style="background:#422006;color:#fde68a">PAPER · Spielgeld</span>`;
+function potsPage() {
+  V.innerHTML = `<div class="page"><div class="sec" style="padding-top:6px"><h2>Töpfe</h2>${PAPER_TAG}</div>
+    <div style="padding:0 22px 10px;color:#999;font-size:13px">Übungsgeld, keine echten Orders. Ergebnisse nach Gebühren und Schlupf. Stand ${tm(S.updated)} (vor <span data-ago="${S.updated}">${ago(S.updated)}</span>).</div>
+    ${flowLine()}${POTS.map(([k, l, d]) => potCard(k, l, d)).join("")}${foot()}</div>`;
+}
+function potsTeaser() {
+  const t = POTS.map(([k, l]) => { const d = potData(k); return `${l} ${d.trades ?? 0} · <span class="${(d.sum_pnl_usd || 0) >= 0 ? "pos" : "neg"}">${usd(d.sum_pnl_usd || 0, true)}</span>`; }).join(" &nbsp;|&nbsp; ");
+  return `<a class="flcard" href="#/pots"><span style="font-size:22px">🧪</span><span><b>Töpfe · PAPER · Spielgeld</b><small>${t}</small></span></a>`;
+}
+
 // ---------- router / load ----------
 function render() {
   if (!S) return;
@@ -304,6 +345,7 @@ function render() {
   else if (r === "account") account();
   else if (r === "auditor") auditorPage(a ? decodeURIComponent(a) : null, b);
   else if (r === "floor") floorPage();
+  else if (r === "pots") potsPage();
   else if (r === "coin") coin(decodeURIComponent(a || ""));
   else home();
 }
